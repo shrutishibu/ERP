@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('add_product') }}">Add Product</a>
+    <a href="{{ url_for('recommend_restock') }}">Restock Recommendations</a>
+</nav>
+
+<div class="container">
+    <h1>Inventory Management System</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Sales</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in inventory %}
+            <tr>
+                <td>{{ item['Product ID'] }}</td>
+                <td>{{ item['Product Name'] }}</td>
+                <td>{{ item['Category'] }}</td>
+                <td>{{ item['Price'] }}</td>
+                <td>{{ item['Stock'] }}</td>
+                <td>{{ item['Total Sales'] }}</td>
+                <td>
+                    <a href="{{ url_for('update_product', product_id=item['Product ID']) }}">Update</a>
+                    <form action="{{ url_for('delete_product', product_id=item['Product ID']) }}" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                    <a href="{{ url_for('record_sale', product_id=item['Product ID']) }}">Record Sale</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

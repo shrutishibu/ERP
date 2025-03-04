@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restock Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('add_product') }}">Add Product</a>
+    <a href="{{ url_for('recommend_restock') }}" class="active">Restock Recommendations</a>
+</nav>
+
+<div class="container">
+    <h1>Restock Recommendations</h1>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% if recommendations %}
+    <div class="recommendations-grid">
+        {% for item in recommendations %}
+        <div class="recommendation-card">
+            <div class="recommendation-header">
+                <h3>{{ item["name"] }}</h3>
+                <span class="badge">Restock Needed</span>
+            </div>
+            <div class="recommendation-info">
+                <p>Stock: <strong>{{ item["stock"] }}</strong></p>
+                <p>Restock Needed: <strong>{{ item["restock_needed"] }}</strong></p>
+            </div>
+            <div class="recommendation-footer">
+                <form action="{{ url_for('restock_product', product_id=item['name']) }}" method="post">
+                    <button type="submit" class="btn btn-primary">Restock Now</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="success-message">🎉 All items are sufficiently stocked!</p>
+    {% endif %}
+</div>
+</body>
+</html>
