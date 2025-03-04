@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: inventory-management
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    rootDir: .
+    envVars:
+      - key: PORT
+        value: 5000
